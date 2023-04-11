@@ -1,23 +1,26 @@
-import 'package:ebook/globals/constants.dart';
-import 'package:ebook/views/homepage.dart';
+import 'package:ebook/my_app.dart';
+import 'package:ebook/src/screen/flip_book_controllers.dart';
+import 'package:ebook/src/screen/flip_book_view.dart';
+import 'package:flip_book/flip_book.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 void main() {
   runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: projectName,
-      theme: ThemeData(
-        primarySwatch: Colors.cyan,
-      ),
-      home: const HomePage(),
-    );
-  }
-}
+/*
+void main() async {
+  ensureInitialized([FlipBookLocales.he]);
+  runApp(
+    MaterialApp(home: MultiProvider(
+        providers: [
+          ChangeNotifierProvider(create: (_) => FlipBookControllers()),
+        ],
+        builder: (context, _) {
+          final app = FlipBookView();
+          app.build(context);
+          return app;
+        }),)
+  );
+}*/
