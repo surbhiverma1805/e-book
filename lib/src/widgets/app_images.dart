@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:ebook/src/utils/app_colors.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class AppCachedNetworkImage extends StatelessWidget {
   final String imageUrl;
@@ -67,12 +68,23 @@ class AppLocalFileImage extends StatelessWidget {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(radius ?? 0),
       ),
-      child: Image.file(
-        File(imageUrl),
-        height: height,
-        width: width,
-        fit: fit,
-      ),
+      child: Image.file(File(imageUrl), height: height, width: width, fit: fit,
+          frameBuilder: (BuildContext context, Widget child, int? frame,
+              bool wasSynchronouslyLoaded) {
+        if (wasSynchronouslyLoaded) return child;
+        return AnimatedSwitcher(
+          duration: const Duration(seconds: 1),
+          child: frame != null
+              ? child
+              : SizedBox(
+                  height: 30.h,
+                  width: 30.w,
+                  child: const CircularProgressIndicator(
+                    color: cyanColor,
+                  ),
+                ),
+        );
+      }),
     );
   }
 }

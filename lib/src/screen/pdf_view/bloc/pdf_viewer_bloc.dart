@@ -3,8 +3,8 @@ import 'dart:io';
 
 import 'package:ebook/model/album_list_resp.dart';
 import 'package:ebook/utility/utility.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:share_plus/share_plus.dart';
 
 part 'pdf_viewer_state.dart';
 
@@ -21,32 +21,51 @@ class PdfViewerBloc extends Bloc<PdfViewerEvent, PdfViewerState> {
   FutureOr<void> _onPdfViewerInitialEvent(
       PdfViewerInitialEvent event, Emitter<PdfViewerState> emit) async {
     //emit(PdfViewerLoaded(isLoading: true));
+    print("here");
     emit(PdfViewerLoaded(isLoading: true));
     List<String>? imageList = [];
+    String? songName;
     var dirPath = "${await Utility.getSavedDir()}/${event.albumName}";
+    // var dirPath =
+    //     "${await Utility.getSavedDir()}/${await Utility.localFileName(event.albumName)}";
 
-    print("here");
     if (!(await Utility.dirDownloadFileExists(dirName: dirPath))) {
       await Directory(dirPath).create();
       print("directory");
     }
 
-    event.galleryImageList?.forEach(
-          (image) async {
-        await Utility.saveDownloadedImageToLocal(
-          imageName: image.imageName,
-          albumName: event.albumName,
-        );
-      },
+    if (await Utility.checkInternetConnectivity()) {
+      /// Download and save audio in local dir from network
+      /*  await Utility.saveDownloadedImageToLocal(
+      fileName: event.songName,
+      albumName: event.albumName,
     );
+*/
+      event.galleryImageList?.forEach(
+        (image) async {
+          await Utility.saveDownloadedImageToLocal(
+            fileName: image.imageName,
+            albumName: event.albumName,
+          );
+        },
+      );
+    }
 
+    /// Get downloaded song from local
+    //songName = "${await Utility.getSavedDir()}/${event.songName}";
     imageList = await Utility.getDownloaded(
         imgList: event.galleryImageList, postTitle: event.albumName);
+    print("img : ${imageList?[0]}");
     imageList?.forEach((element) {
-      print("img : $element");
+      // print("img : ${imageList?[0]}");
     });
-    debugPrint("surbhi ${imageList?[0] ?? "hello"} ${imageList?.length}");
 
+    if ((imageList?.length ?? 0) % 2 != 0) {
+      imageList?.removeLast();
+      print("this ${imageList?.length}");
+    }
+    await Future.delayed(const Duration(seconds: 10));
+    //await Future.delayed(const Duration(milliseconds: 9000));
     emit(_lastState.copyWith(
       imageList: imageList,
       isLoading: false,
@@ -67,7 +86,7 @@ class PdfViewerBloc extends Bloc<PdfViewerEvent, PdfViewerState> {
         event.galleryImageList?.forEach(
           (image) async {
             await Utility.saveDownloadedImageToLocal(
-              imageName: image.imageName,
+              fileName: image.imageName,
               albumName: event.albumName,
             );
           },
@@ -78,11 +97,8 @@ class PdfViewerBloc extends Bloc<PdfViewerEvent, PdfViewerState> {
 
   Future<void> _onPdfViewerShareEvent(
       PdfViewerShareEvent event, Emitter<PdfViewerState> emit) async {
-    /*Share.share(event.url ?? "");
-    emit(_lastState);*/
-    emit(_lastState.copyWith(
-      isSlider: event.isSlider,
-      isFirstImage: event.isFirstImage,
-    ));
+    Share.share("Hello this is my first file which I am sharing",
+        subject: "Sharing first document");
+    emit(_lastState);
   }
 }

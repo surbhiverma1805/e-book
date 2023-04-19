@@ -59,6 +59,8 @@ dependencies:
   shared_preferences: ^2.1.0
   path: ^1.8.2
   assets_audio_player: ^3.0.6
+  flutter_screenutil: ^5.7.0
+  shimmer: ^2.0.0
 
 #dependency_overrides:
   #ffi: ^2.0.1

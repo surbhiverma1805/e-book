@@ -12,6 +12,10 @@ final GlobalKey<ScaffoldMessengerState> snackBarKey =
     GlobalKey<ScaffoldMessengerState>();
 
 class Utility {
+  static Future<String?> localFileName(String? fileName) async {
+    return fileName?.replaceAll(" ", "_").toLowerCase();
+  }
+
   static Future<File> localFile(String? pathName) async {
     final path = await Utility.getSavedDir();
     return File('$path/$pathName');
@@ -19,8 +23,8 @@ class Utility {
 
   static Future<bool> checkInternetConnectivity() async {
     final connectivityResult = await Connectivity().checkConnectivity();
-    if (connectivityResult == ConnectivityResult.mobile || connectivityResult ==
-    ConnectivityResult.wifi) {
+    if (connectivityResult == ConnectivityResult.mobile ||
+        connectivityResult == ConnectivityResult.wifi) {
       return true;
     } else {
       return false;
@@ -73,15 +77,17 @@ class Utility {
   }
 
   static Future<String?> saveDownloadedImageToLocal({
-    String? imageName,
+    String? fileName,
     String? albumName,
   }) async {
     File? imageFile;
+    String? albName = albumName?.replaceAll(" ", "_").toLowerCase();
+    print("new album name $albName");
     var dirPath = "${await Utility.getSavedDir()}/$albumName";
-    if (!(await Utility.downloadFileExists("$albumName/$imageName"))) {
+    if (!(await Utility.downloadFileExists("$albumName/$fileName"))) {
       final downloadedImage =
-          await http.get(Uri.parse("${ApiMethods.imageBaseUrl}/$imageName"));
-      imageFile = File(path.join(dirPath, "$imageName.jpeg"));
+          await http.get(Uri.parse("${ApiMethods.imageBaseUrl}/$fileName"));
+      imageFile = File(path.join(dirPath, "$fileName.jpeg"));
       await imageFile.writeAsBytes(downloadedImage.bodyBytes);
     }
     return imageFile?.path;
@@ -93,6 +99,8 @@ class Utility {
       String? imageName}) async {
     List<String> list = [];
     var dirPath = "${await Utility.getSavedDir()}/$postTitle";
+    // var dirPath =
+    //     "${await Utility.getSavedDir()}/${await Utility.localFileName(postTitle)}";
     imgList?.forEach((img) {
       list.add(File(path.join(dirPath, "${img.imageName}.jpeg")).path);
     });

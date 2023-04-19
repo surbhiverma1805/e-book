@@ -9,6 +9,7 @@ import 'package:ebook/utility/constants.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class HomeView extends StatelessWidget {
@@ -18,7 +19,7 @@ class HomeView extends StatelessWidget {
 
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
-  final double borderRadius = 20;
+  final double borderRadius = 20.r;
 
   /// Getting error using this package
   //final GlobalKey<FlipWidgetState> _flipKey = GlobalKey();
@@ -67,7 +68,7 @@ class HomeView extends StatelessWidget {
                 appBar: AppBar(
                   title: Text(
                     Constants.projectName,
-                    style: const TextStyle().bold.copyWith(fontSize: 22),
+                    style: const TextStyle().bold.copyWith(fontSize: 22.sp),
                   ),
                 ),
                 floatingActionButton: state.isLoading ?? false
@@ -140,20 +141,19 @@ class HomeView extends StatelessWidget {
                 //   ),
                 // ),
                 body: state.isLoading ?? false
-                    ? const Center(
+                    ? Center(
                         child: SpinKitChasingDots(
                           color: cyanColor,
-                          size: 50.0,
+                          size: 50.sp,
                         ),
                       )
                     : state.allAlbumList == null ||
                             (state.allAlbumList?.isEmpty ?? true)
                         ? Center(
                             child: Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 10),
+                              padding: EdgeInsets.symmetric(horizontal: 10.w),
                               child: Text(
-                                Constants.pleaseConnectToInternet,
+                                Constants.somethingWentWrong,
                                 textAlign: TextAlign.center,
                                 style: const TextStyle().medium.copyWith(
                                       color: Colors.grey.shade500,
@@ -163,7 +163,7 @@ class HomeView extends StatelessWidget {
                             ),
                           )
                         : GridView.builder(
-                            padding: const EdgeInsets.all(15),
+                            padding: EdgeInsets.all(15.h),
                             // separatorBuilder: (context, index) => const Divider(
                             //   color: Colors.grey,
                             // ),
@@ -179,7 +179,14 @@ class HomeView extends StatelessWidget {
                             itemBuilder: (context, index) => Container(
                               // padding: const EdgeInsets.all(5),
                               decoration: BoxDecoration(
-                                color: Colors.cyan,
+                                gradient: const LinearGradient(
+                                  colors: [
+                                    cyanColor,
+                                    Colors.white,
+                                  ],
+                                  begin: Alignment.centerLeft,
+                                  end: Alignment.centerRight,
+                                ),
                                 borderRadius:
                                     BorderRadius.circular(borderRadius),
                               ),
@@ -215,7 +222,7 @@ class HomeView extends StatelessWidget {
                                               .allAlbumList?[index].imageName ??
                                           "",
                                       fit: BoxFit.cover,
-                                      radius: 20,
+                                      radius: 20.r,
                                     )
 
                                         /*  AppCachedNetworkImage(
@@ -244,8 +251,8 @@ class HomeView extends StatelessWidget {
                                       bottom: 0,
                                       child: Container(
                                         // height: 40,
-                                        padding: const EdgeInsets.symmetric(
-                                            vertical: 5),
+                                        padding:
+                                            EdgeInsets.symmetric(vertical: 5.h),
                                         decoration: BoxDecoration(
                                           color: Colors.black,
                                           borderRadius: BorderRadius.vertical(

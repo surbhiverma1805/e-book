@@ -1,13 +1,11 @@
 import 'package:ebook/bloc/app_bloc/app_bloc.dart';
 import 'package:ebook/model/photobook.dart';
-import 'package:ebook/src/book_view.dart';
 import 'package:ebook/src/screen/flip_page_builder.dart';
-import 'package:ebook/src/screen/home_page/home_view.dart';
+import 'package:ebook/src/screen/pdf_view/custom_flip_book/widget/book.dart';
+import 'package:ebook/src/screen/pdf_view/custom_flip_book/controller/book_controller.dart';
 import 'package:ebook/src/screen/pdf_view/bloc/pdf_viewer_bloc.dart';
-import 'package:ebook/src/utils/extension/text_style_decoration.dart';
 import 'package:ebook/src/widgets/appbar.dart';
 import 'package:ebook/src/widgets/internet_lost_widget.dart';
-import 'package:flip_book/flip_book.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'dart:async';
@@ -17,8 +15,6 @@ import 'package:page_flip/page_flip.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
-import 'package:turn_page_transition/turn_page_transition.dart';
-//import 'package:turn_page_transition/turn_page_transition.dart';
 
 class PDFViewer extends StatefulWidget {
   final PhotoBook? photoBook;
@@ -329,7 +325,8 @@ class _PDFViewerState extends State<PDFViewer> {
                                 actions: [
                                   IconButton(
                                       onPressed: () {
-                                        Share.share(widget.photoBook?.url ?? "");
+                                        Share.share(
+                                            widget.photoBook?.url ?? "");
                                       },
                                       icon: const Icon(Icons.share))
                                 ],

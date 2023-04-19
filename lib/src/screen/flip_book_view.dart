@@ -1,10 +1,4 @@
-import 'package:ebook/src/screen/en_page_builder.dart';
-import 'package:ebook/src/screen/flip_book_controllers.dart';
-import 'package:ebook/src/screen/he_page_builder.dart';
-import 'package:flip_book/flip_book.dart';
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-
+/*
 class FlipBookView extends StatelessWidget {
   final flipBookToolbarItemsConfigEN =
       FlipBookToolbarItemsConfig(locale: FlipBookLocales.en);
@@ -37,11 +31,14 @@ class FlipBookView extends StatelessWidget {
                                 buildFlipBookControllers.flipBookControllerEN,
                                 flipBookToolbarItemsConfigEN)
                             .child,
-                        /*  FlipBookToolbarItemCover(
+                        */
+/*  FlipBookToolbarItemCover(
                             buildFlipBookControllers.flipBookControllerEN,
                             flipBookToolbarItemsConfigEN)
-                            .child,*/
-                        /*   FlipBookToolbarItemPrev(
+                            .child,*//*
+
+                        */
+/*   FlipBookToolbarItemPrev(
                             buildFlipBookControllers.flipBookControllerEN,
                             flipBookToolbarItemsConfigEN)
                             .child,
@@ -53,7 +50,8 @@ class FlipBookView extends StatelessWidget {
                             buildFlipBookControllers.flipBookControllerEN,
                             flipBookToolbarItemsConfigEN,
                             5)
-                            .child,*/
+                            .child,*//*
+
                       ],
                     ),
                   ),
@@ -125,3 +123,4 @@ class FlipBookView extends StatelessWidget {
     );
   }
 }
+*/

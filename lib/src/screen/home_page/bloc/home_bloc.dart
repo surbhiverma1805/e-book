@@ -92,8 +92,10 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       }
     }
     String data = await SharedPre.allAlbumResp.getStringValue();
-    final albumResp = albumListRespFromJson(data);
-    /*  albumResp.data?.forEach((data) async {
+
+    if (data.isNotEmpty) {
+      final albumResp = albumListRespFromJson(data);
+      /*  albumResp.data?.forEach((data) async {
       final downloadedImage = await http.get(
         Uri.parse("${ApiMethods.imageBaseUrl}/${data.featureImg}"),
       );
@@ -103,38 +105,43 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       allAlbumList!.add(AllAlbum(imageName: imgFile.path, albumName: albumName));
     });*/
 
-    for (var i = 0; i < (albumResp.data?.length ?? 0); i++) {
-      List? file;
-      if (event.isInternetAvail == true &&
-          await Utility.checkInternetConnectivity() == true) {
-        final downloadedImage = await http.get(
-          Uri.parse(
-              "${ApiMethods.imageBaseUrl}/${albumResp.data?[i].featureImg}"),
-        );
-        imgFile = File(path.join("$dir/${Constants.allAlbums}",
-            "${albumResp.data?[i].featureImg}.jpeg"));
-        await imgFile.writeAsBytes(downloadedImage.bodyBytes);
-        albumImageName = imgFile.path;
-        albumName = albumResp.data?[i].postTitle;
-        allAlbumList
-            .add(AllAlbum(imageName: albumImageName, albumName: albumName));
-      } else {
-        file = Directory("$dir/${Constants.allAlbums}").listSync();
-        if (file.length - 1 == albumResp.data?.length) {
-          albumImageName = (await Utility.localFile(
-                  "${Constants.allAlbums}/${albumResp.data?[i].featureImg}.jpeg"))
-              .path;
+      for (var i = 0; i < (albumResp.data?.length ?? 0); i++) {
+        List? file;
+        if (event.isInternetAvail == true &&
+            await Utility.checkInternetConnectivity() == true) {
+          final downloadedImage = await http.get(
+            Uri.parse(
+                "${ApiMethods.imageBaseUrl}/${albumResp.data?[i].featureImg}"),
+          );
+          imgFile = File(path.join("$dir/${Constants.allAlbums}",
+              "${albumResp.data?[i].featureImg}.jpeg"));
+          await imgFile.writeAsBytes(downloadedImage.bodyBytes);
+          albumImageName = imgFile.path;
           albumName = albumResp.data?[i].postTitle;
           allAlbumList
               .add(AllAlbum(imageName: albumImageName, albumName: albumName));
+        } else {
+          file = Directory("$dir/${Constants.allAlbums}").listSync();
+          if (file.length - 1 == albumResp.data?.length) {
+            albumImageName = (await Utility.localFile(
+                    "${Constants.allAlbums}/${albumResp.data?[i].featureImg}.jpeg"))
+                .path;
+            albumName = albumResp.data?[i].postTitle;
+            allAlbumList
+                .add(AllAlbum(imageName: albumImageName, albumName: albumName));
+          }
         }
       }
+      emit(_lastState.copyWith(
+        isLoading: false,
+        allAlbumList: allAlbumList,
+        albumData: albumResp.data,
+      ));
+    } else {
+      emit(_lastState.copyWith(
+        isLoading: false,
+      ));
     }
-    emit(_lastState.copyWith(
-      isLoading: false,
-      allAlbumList: allAlbumList,
-      albumData: albumResp.data,
-    ));
   }
 
   FutureOr<void> _onPdfViewEvent(
@@ -144,11 +151,13 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     if (await Utility.dirDownloadFileExists(dirName: dirPath) &&
         Directory(dirPath).listSync().length ==
             event.galleryImageList?.length) {
-      print("if1");
+      print("if1 ${Directory(dirPath).listSync().length}");
       AppRoutes.router.pushNamed(AppRoutes.pdfView, extra: {
         'album_name': event.albumName,
         'gallery_image_list': event.galleryImageList,
-        'pin': event.pin,
+        'list_len': Directory(dirPath).listSync().length % 2 != 0
+            ? Directory(dirPath).listSync().length - 1
+            : Directory(dirPath).listSync().length,
         'front_image': event.frontImage,
       });
     } else {
@@ -158,7 +167,9 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         AppRoutes.router.pushNamed(AppRoutes.pdfView, extra: {
           'album_name': event.albumName,
           'gallery_image_list': event.galleryImageList,
-          'pin': event.pin,
+          'list_len': (event.galleryImageList?.length ?? 0) % 2 != 0
+              ? (event.galleryImageList?.length ?? 0) - 1
+              : event.galleryImageList?.length,
           'front_image': event.frontImage,
         });
       } else {

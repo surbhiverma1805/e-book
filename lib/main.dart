@@ -1,14 +1,58 @@
+import 'dart:io';
+
 import 'package:ebook/my_app.dart';
-import 'package:ebook/src/screen/flip_book_controllers.dart';
-import 'package:ebook/src/screen/flip_book_view.dart';
-import 'package:flip_book/flip_book.dart';
+import 'package:ebook/src/screen/flip_panel_view.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+
+List<Image> imageList = <Image>[
+  Image.asset(
+    "assets/images/image1.jpeg",
+    fit: BoxFit.cover,
+  ),
+  Image.asset(
+    "assets/images/image2.jpeg",
+    fit: BoxFit.cover,
+  ),
+  Image.asset(
+    "assets/images/image3.jpeg",
+    fit: BoxFit.cover,
+  ),
+  Image.asset(
+    "assets/images/image4.jpeg",
+    fit: BoxFit.cover,
+  ),
+  Image.asset(
+    "assets/images/image5.jpeg",
+    fit: BoxFit.cover,
+  ),
+  Image.asset(
+    "assets/images/image6.jpeg",
+    fit: BoxFit.cover,
+  ),
+];
+
+
+
+class MyHttpOverrides extends HttpOverrides {
+  @override
+  HttpClient createHttpClient(SecurityContext? context) {
+    return super.createHttpClient(context)
+      ..badCertificateCallback =
+          (X509Certificate cert, String host, int port) => true; }}
 
 void main() {
-  runApp(const MyApp());
+  //await ScreenUtil.ensureScreenSize();
+  WidgetsFlutterBinding.ensureInitialized();
+  HttpOverrides.global = MyHttpOverrides();
+  runApp( const MyApp());
+  // runApp(FlipbookPage(
+  //   images: imageList,
+  // ));
 }
 
+
+///access token for git
+//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
 /*
 void main() async {
   ensureInitialized([FlipBookLocales.he]);

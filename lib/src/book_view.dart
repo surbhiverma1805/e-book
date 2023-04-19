@@ -1,9 +1,4 @@
-import 'package:ebook/src/screen/en_page_builder.dart';
-import 'package:ebook/src/screen/flip_page_builder.dart';
-import 'package:flip_book/flip_book.dart';
-import 'package:flutter/material.dart';
-
-class BookView extends StatefulWidget {
+/*class BookView extends StatefulWidget {
   const BookView({Key? key}) : super(key: key);
 
   @override
@@ -36,4 +31,4 @@ class _BookViewState extends State<BookView> {
       ),
     );
   }
-}
+}*/

@@ -7,5 +7,10 @@ class Constants {
   static const String allAlbums = "allAlbums";
   static const String pleaseConnectToInternet =
       "Please connect to the internet to sync the album";
+  static const String playAgain = "Play Again";
+  static const String somethingWentWrong =
+      "Something went wrong or may be you don't have proper internet connection."
+      "So please check internet and restart the App";
+  static const String unknown = "Unknown";
 }
 //const String projectName = 'Ebook';

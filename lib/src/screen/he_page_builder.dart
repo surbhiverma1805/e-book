@@ -1,9 +1,4 @@
-import 'package:flip_book/flip_book.dart';
-import 'package:path/path.dart' as path;
-import 'package:flutter/foundation.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter/material.dart';
-
+/*
 final hePageSemanticsDict = {4: "א", 5: "ב", 6: "ג"};
 Widget hePageBuilder(context, pageSize, pageIndex, semanticPageName) {
   Widget pageBody;
@@ -56,4 +51,4 @@ PageSemantics(indexToSemanticName: (pageIndex) {
   } else {
     return "פרק $chapter";
   }
-});
+});*/

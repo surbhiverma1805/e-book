@@ -41,7 +41,7 @@ class AppRoutes {
           return PdfView(
             albumName: data?['album_name'],
             galleryImageList: data?['gallery_image_list'],
-            pin: data?['pin'],
+            pin: data?['list_len'],
             frontImage: data?['front_image'],
           );
         },

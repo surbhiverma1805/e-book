@@ -2,6 +2,9 @@ class AppAssets {
 
   /// assets audios
   static String audio1 = "assets/audios/bluthund_jault.mp3";
+  static String audio2 = "assets/audios/ente_quackt.mp3";
+  static String audio3 = "assets/audios/pfred_whinnert.mp3";
+  static String birdsAudio = "assets/audios/birds_audio.mp3";
 
   /// assets images
   static String image1 = "assets/images/image1.jpeg";
