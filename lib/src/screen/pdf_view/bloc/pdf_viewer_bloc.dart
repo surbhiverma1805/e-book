@@ -12,16 +12,17 @@ part 'pdf_viewer_event.dart';
 
 class PdfViewerBloc extends Bloc<PdfViewerEvent, PdfViewerState> {
   PdfViewerBloc() : super(PdfViewerInitial()) {
+  //PdfViewerBloc(PdfViewerState pdfViewerInitial) : super(pdfViewerInitial) {
     on<PdfViewerInitialEvent>(_onPdfViewerInitialEvent);
     on<PdfViewerShareEvent>(_onPdfViewerShareEvent);
+    on<SlideShowEvent>(_onSlideShowEvent);
+    on<NextPrevButtonEvent>(_onNextPrevButtonEvent);
   }
 
   PdfViewerLoaded get _lastState => state as PdfViewerLoaded;
 
   FutureOr<void> _onPdfViewerInitialEvent(
       PdfViewerInitialEvent event, Emitter<PdfViewerState> emit) async {
-    //emit(PdfViewerLoaded(isLoading: true));
-    print("here");
     emit(PdfViewerLoaded(isLoading: true));
     List<String>? imageList = [];
     String? songName;
@@ -64,7 +65,7 @@ class PdfViewerBloc extends Bloc<PdfViewerEvent, PdfViewerState> {
       imageList?.removeLast();
       print("this ${imageList?.length}");
     }
-    await Future.delayed(const Duration(seconds: 10));
+    await Future.delayed(const Duration(seconds: 6));
     //await Future.delayed(const Duration(milliseconds: 9000));
     emit(_lastState.copyWith(
       imageList: imageList,
@@ -97,8 +98,21 @@ class PdfViewerBloc extends Bloc<PdfViewerEvent, PdfViewerState> {
 
   Future<void> _onPdfViewerShareEvent(
       PdfViewerShareEvent event, Emitter<PdfViewerState> emit) async {
+    print("data____");
     Share.share("Hello this is my first file which I am sharing",
         subject: "Sharing first document");
     emit(_lastState);
+  }
+
+  FutureOr<void> _onSlideShowEvent(
+      SlideShowEvent event, Emitter<PdfViewerState> emit) {
+    print("yeah");
+    emit(_lastState.copyWith(isSlider: event.isSlider));
+  }
+
+  FutureOr<void> _onNextPrevButtonEvent(
+      NextPrevButtonEvent event, Emitter<PdfViewerState> emit) {
+    print("new number : ${event.pageNumber}");
+    emit(_lastState.copyWith(pageNumber: event.pageNumber));
   }
 }

@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:ebook/my_app.dart';
-import 'package:ebook/src/screen/flip_panel_view.dart';
 import 'package:flutter/material.dart';
 
 List<Image> imageList = <Image>[
@@ -31,8 +30,6 @@ List<Image> imageList = <Image>[
   ),
 ];
 
-
-
 class MyHttpOverrides extends HttpOverrides {
   @override
   HttpClient createHttpClient(SecurityContext? context) {
@@ -49,7 +46,6 @@ void main() {
   //   images: imageList,
   // ));
 }
-
 
 ///access token for git
 //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

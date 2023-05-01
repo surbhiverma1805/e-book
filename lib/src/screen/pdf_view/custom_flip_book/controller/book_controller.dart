@@ -25,6 +25,8 @@ class FlipBookController extends ChangeNotifier {
 
   /// To align cover page in center.
   bool isCenterAlign = true;
+  /// To manage the visibility of prev and next button
+  int currentIndex = -1;
 
   /// [FlipBookController]'s constructor
   ///
@@ -92,6 +94,8 @@ class FlipBookController extends ChangeNotifier {
       {duration = const Duration(milliseconds: 800),
         curve = Curves.easeInOutQuad}) async {
     if (animating || currentLeaves.item2 == null) return Future.value();
+    currentIndex = currentLeaf.index;
+    print("next $currentIndex");
     return await animateTo(currentLeaves.item2!.pages.last + 1,
         duration: duration, curve: curve);
   }
@@ -101,6 +105,7 @@ class FlipBookController extends ChangeNotifier {
       {duration = const Duration(milliseconds: 800),
         curve = Curves.easeInOutQuad}) async {
     if (animating || currentLeaves.item1 == null) return Future.value();
+    //currentIndex = currentLeaf.index - 1 == 0 ? -1 : currentLeaf.index - 1;
     return await animateTo(currentLeaves.item1!.pages.first - 2,
         duration: duration, curve: curve);
   }

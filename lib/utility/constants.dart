@@ -12,5 +12,7 @@ class Constants {
       "Something went wrong or may be you don't have proper internet connection."
       "So please check internet and restart the App";
   static const String unknown = "Unknown";
+  static const String prev = "Prev";
+  static const String next = "Next";
 }
 //const String projectName = 'Ebook';

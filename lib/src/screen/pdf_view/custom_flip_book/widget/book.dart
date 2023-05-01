@@ -62,6 +62,10 @@ class FlipBook extends StatefulWidget {
   final PageDelegate pageDelegate;
   final int bufferSize;
 
+  bool showPreNextBtn;
+
+  Size pageSize;
+
   FlipBook({
     Key? key,
     this.addAutomaticKeepAlives = false,
@@ -75,7 +79,9 @@ class FlipBook extends StatefulWidget {
     this.onPageChanged,
     this.padding = _defaultPadding,
     this.pageSemantics,
+    this.showPreNextBtn = true,
     List<Widget> pages = const <Widget>[],
+    required this.pageSize,
   })  : assert(aspectRatioValidation(coverAspectRatio, leafAspectRatio)),
         controller = controller ?? FlipBookController(totalPages: pages.length),
         locale = localeInit(locale),
@@ -100,6 +106,8 @@ class FlipBook extends StatefulWidget {
     required PageBuilder pageBuilder,
     this.pageSemantics,
     int? totalPages,
+    this.showPreNextBtn = true,
+    required this.pageSize,
   })  : assert(totalPagesValidation(controller?.totalPages) ||
       totalPagesValidation(totalPages)),
         assert(aspectRatioValidation(coverAspectRatio, leafAspectRatio)),

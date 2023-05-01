@@ -144,6 +144,87 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     }
   }
 
+  FutureOr<void> init(HomeInitialEvent event, bool isDownload) async {
+    var dir = await Utility.getSavedDir();
+    File? imgFile;
+    String? albumImageName, albumName;
+    List<AllAlbum> allAlbumList = [];
+
+    if (isDownload) {
+      if (event.isInternetAvail == true &&
+          await Utility.checkInternetConnectivity() == true) {
+        var res = await Api.instance.getSliderData();
+        if (res.status == 200) {
+          if (!(await Utility.dirDownloadFileExists(
+              dirName: "$dir/${Constants.allAlbums}"))) {
+            await Directory("$dir/${Constants.allAlbums}").create();
+          }
+          final File file = File("$dir/${Constants.allAlbums}/album.json");
+          await file.writeAsString(jsonEncode(res));
+          await SharedPre.setString(
+              SharedPre.allAlbumResp, await file.readAsString());
+        } else {
+          //emit(_lastState.copyWith(isLoading: false));
+          Utility.showSnackBar("Something went wrong");
+        }
+      } else {
+        //emit(_lastState.copyWith(isLoading: false));
+        Utility.showSnackBar(Constants.pleaseConnectToInternet);
+      }
+    }
+
+    // this code will always run except if dir not exist or for first time
+    if (!(await Utility.dirDownloadFileExists(
+        dirName: "$dir/${Constants.allAlbums}"))) {
+      String data = await SharedPre.allAlbumResp.getStringValue();
+
+      if (data.isNotEmpty) {
+        final albumResp = albumListRespFromJson(data);
+        if (isDownload) {}
+        for(var i = 0; i < (albumResp.data?.length ?? 0); i++) {
+          List? file;
+          if (isDownload) {
+            if (event.isInternetAvail == true &&
+                await Utility.checkInternetConnectivity() == true) {
+              final downloadedImage = await http.get(
+                Uri.parse(
+                    "${ApiMethods.imageBaseUrl}/${albumResp.data?[i]
+                        .featureImg}"),
+              );
+              imgFile = File(path.join("$dir/${Constants.allAlbums}",
+                  "${albumResp.data?[i].featureImg}.jpeg"));
+              await imgFile.writeAsBytes(downloadedImage.bodyBytes);
+              albumImageName = imgFile.path;
+              albumName = albumResp.data?[i].postTitle;
+              allAlbumList
+                  .add(
+                  AllAlbum(imageName: albumImageName, albumName: albumName));
+            }
+          } else {
+            file = Directory("$dir/${Constants.allAlbums}").listSync();
+            if (file.length - 1 == albumResp.data?.length) {
+              albumImageName = (await Utility.localFile(
+                  "${Constants.allAlbums}/${albumResp.data?[i].featureImg}.jpeg"))
+                  .path;
+              albumName = albumResp.data?[i].postTitle;
+              allAlbumList
+                  .add(AllAlbum(imageName: albumImageName, albumName: albumName));
+            }
+          }
+        }
+        emit(_lastState.copyWith(
+          isLoading: false,
+          allAlbumList: allAlbumList,
+          albumData: albumResp.data,
+        ));
+      } else {
+        emit(_lastState.copyWith(
+          isLoading: false,
+        ));
+      }
+    }
+  }
+
   FutureOr<void> _onPdfViewEvent(
       GoToPdfViewEvent event, Emitter<HomeState> emit) async {
     var dirPath = "${await Utility.getSavedDir()}/${event.albumName}";

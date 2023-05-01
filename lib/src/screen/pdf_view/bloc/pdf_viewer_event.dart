@@ -20,12 +20,18 @@ class PdfViewerInitialEvent extends PdfViewerEvent {
 
 class PdfViewerShareEvent extends PdfViewerEvent {
   final String? url;
-  final bool? isSlider;
-  final bool? isFirstImage;
 
   PdfViewerShareEvent({
     this.url,
-    this.isSlider,
-    this.isFirstImage,
   });
+}
+
+class SlideShowEvent extends PdfViewerEvent {
+  final bool? isSlider;
+  SlideShowEvent({this.isSlider});
+}
+
+class NextPrevButtonEvent extends PdfViewerEvent {
+  final int pageNumber;
+  NextPrevButtonEvent({required this.pageNumber});
 }

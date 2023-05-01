@@ -336,6 +336,7 @@ class _PDFViewerState extends State<PDFViewer> {
                             Expanded(
                               child: isSlider ?? false
                                   ? FlipBook.builder(
+                                      pageSize: MediaQuery.of(context).size,
                                       pageBuilder: flipPageBuilder,
                                       totalPages: 6,
                                       onPageChanged: (i) {

@@ -13,6 +13,8 @@ class Leaf extends ChangeNotifier {
   bool get isTurned => animationController.value == 1;
   bool get isTurning => animationController.value != 0;
 
+  Duration? animationDuration;
+
   Leaf(
       {required this.index,
 
@@ -21,7 +23,7 @@ class Leaf extends ChangeNotifier {
       : super() {
     animationController = AnimationController(
       vsync: vsync,
-      duration: const Duration(milliseconds: 100),
+      duration: animationDuration ?? const Duration(milliseconds: 800),
       // duration: const Duration(milliseconds: 800),
     );
     animation = CurvedAnimation(
@@ -31,7 +33,7 @@ class Leaf extends ChangeNotifier {
     );
 
     pages = [index * 2, index * 2 + 1];
-    print("leaf pages $pages");
+    print("leaf pages $animationDuration");
   }
 
   Future<void> animateTo(
@@ -39,6 +41,7 @@ class Leaf extends ChangeNotifier {
         required Duration duration,
         required Curve curve,
       }) async {
+    animationDuration = duration;
     if (isTurned) {
       if (page < pages.first) {
         return animationController.reverse();

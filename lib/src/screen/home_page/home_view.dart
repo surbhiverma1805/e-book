@@ -66,19 +66,23 @@ class HomeView extends StatelessWidget {
             if (state is HomeLoadedState) {
               return Scaffold(
                 appBar: AppBar(
+                  centerTitle: true,
                   title: Text(
                     Constants.projectName,
-                    style: const TextStyle().bold.copyWith(fontSize: 22.sp),
+                    style: const TextStyle().bold.copyWith(
+                          fontSize: 22.sp,
+                          color: Colors.white,
+                        ),
                   ),
                 ),
-                floatingActionButton: state.isLoading ?? false
+                /*   floatingActionButton: state.isLoading ?? false
                     ? const SizedBox.shrink()
                     : FloatingActionButton(
                         onPressed: () {
                           addAlbum(context);
                         },
                         child: const Icon(Icons.add),
-                      ),
+                      ),*/
                 // body: SizedBox(
                 //   // height: 260,
                 //   child: PageFlipWidget(
@@ -168,8 +172,10 @@ class HomeView extends StatelessWidget {
                             //   color: Colors.grey,
                             // ),
                             gridDelegate:
-                                const SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 2,
+                                SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: MediaQuery.of(context).orientation == Orientation.landscape
+                                  ? 3
+                                  : 2,
                               mainAxisSpacing: 15,
                               crossAxisSpacing: 15,
                             ),
@@ -250,7 +256,8 @@ class HomeView extends StatelessWidget {
                                       right: 0,
                                       bottom: 0,
                                       child: Container(
-                                        // height: 40,
+                                        alignment: Alignment.center,
+                                        height: 40.h,
                                         padding:
                                             EdgeInsets.symmetric(vertical: 5.h),
                                         decoration: BoxDecoration(
@@ -268,7 +275,7 @@ class HomeView extends StatelessWidget {
                                           textAlign: TextAlign.center,
                                           style: const TextStyle()
                                               .bold
-                                              .copyWith(color: Colors.white),
+                                              .copyWith(color: Colors.white, fontSize: 14.sp,),
                                         ),
                                       ),
                                     ),

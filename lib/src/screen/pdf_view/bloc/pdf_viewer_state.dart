@@ -12,6 +12,7 @@ class PdfViewerLoaded extends PdfViewerState {
   List<String>? imageList;
   String? frontImage;
   String? songName;
+  int? pageNumber;
 
   PdfViewerLoaded({
     this.isLoading,
@@ -21,6 +22,7 @@ class PdfViewerLoaded extends PdfViewerState {
     this.imageList,
     this.frontImage,
     this.songName,
+    this.pageNumber = 0,
   });
 
   PdfViewerLoaded copyWith({
@@ -31,6 +33,7 @@ class PdfViewerLoaded extends PdfViewerState {
     List<String>? imageList,
     String? frontImage,
     String? songName,
+    int? pageNumber,
   }) =>
       PdfViewerLoaded(
         isLoading: isLoading ?? this.isLoading,
@@ -40,5 +43,6 @@ class PdfViewerLoaded extends PdfViewerState {
         imageList: imageList ?? this.imageList,
         frontImage: frontImage ?? this.frontImage,
         songName: songName ?? this.songName,
+        pageNumber: pageNumber ?? this.pageNumber,
       );
 }
