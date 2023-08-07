@@ -1,3 +1,4 @@
+import 'package:ebook/model/album_detail_resp.dart';
 import 'package:ebook/model/album_list_resp.dart';
 import 'package:ebook/repository/api_service/api_client.dart';
 import 'package:ebook/repository/api_service/api_methods.dart';
@@ -9,7 +10,7 @@ class Api {
 
   Api._internal();
 
-  Future<AlbumListResp> getSliderData() async {
+  Future<AlbumListResp> getAlbumList() async {
     try {
       String resp = await _apiClient.postMethod(url: _apiMethod.albumImages);
       if (resp.isEmpty) {
@@ -19,6 +20,22 @@ class Api {
       }
     } catch (e) {
       return AlbumListResp(message: e.toString());
+    }
+  }
+
+  Future<AlbumDetailResp> getAlbumDetail({
+      String? albumCode}) async {
+    try {
+      String resp = await _apiClient.getMethod(
+        url: "${_apiMethod.albumDetail}/$albumCode",
+      );
+      if (resp.isEmpty) {
+        return AlbumDetailResp();
+      } else {
+        return albumDetailRespFromJson(resp);
+      }
+    } catch (e) {
+      return AlbumDetailResp(message: e.toString());
     }
   }
 }

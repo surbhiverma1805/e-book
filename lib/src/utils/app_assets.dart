@@ -1,5 +1,4 @@
 class AppAssets {
-
   /// assets audios
   static String audio1 = "assets/audios/bluthund_jault.mp3";
   static String audio2 = "assets/audios/ente_quackt.mp3";
@@ -14,3 +13,7 @@ class AppAssets {
   static String image5 = "assets/images/image5.jpeg";
   static String image6 = "assets/images/image6.jpeg";
 }
+
+///AB561680 Flower
+///AB559451 Book
+///Alb00314240 default

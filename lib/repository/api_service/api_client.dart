@@ -13,12 +13,15 @@ class ApiClient {
 
   //get method
   Future<String> getMethod(
-      {required String url, Map<String, String>? header}) async {
+      {required String url,
+      Map<String, String>? header,
+      Map<String, String>? requestPrams,}) async {
     try {
       log(url);
       if (header != null) {
         log(header.toString());
       }
+      /*// Uri.parse(url).replace(queryParameters: requestPrams),*/
       final response = await http.get(
         Uri.parse(url),
         headers: header,

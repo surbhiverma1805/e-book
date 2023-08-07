@@ -6,4 +6,6 @@ class ApiMethods {
   ///[ Album Images Api]
   final albumImages =
       "https://app.soundchatradio.com:3000/api/v1/auth/listgallery";
+
+  final albumDetail = "https://impetrosys.com/paricreation/albumDetail";
 }

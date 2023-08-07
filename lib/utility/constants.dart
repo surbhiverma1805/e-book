@@ -1,5 +1,5 @@
 class Constants {
-  static const String projectName = "Ebook";
+  static const String projectName = "PHOTOBOOK";
   static const String noInternet = "No Internet!";
   static const String unknownAlbum = "Unknown Album";
   static const String slideShow = "Slide Show";
@@ -14,5 +14,6 @@ class Constants {
   static const String unknown = "Unknown";
   static const String prev = "Prev";
   static const String next = "Next";
+  static const String album = "album";
 }
 //const String projectName = 'Ebook';

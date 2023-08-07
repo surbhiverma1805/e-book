@@ -68,6 +68,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
   HomeLoadedState get _lastState => state as HomeLoadedState;
 
+
   FutureOr<void> _onHomeInitialEvent(
       HomeInitialEvent event, Emitter<HomeState> emit) async {
     emit(HomeLoadedState(isLoading: true));
@@ -77,7 +78,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     String? albumImageName, albumName;
     if (event.isInternetAvail == true &&
         await Utility.checkInternetConnectivity() == true) {
-      var res = await Api.instance.getSliderData();
+      var res = await Api.instance.getAlbumList();
       if (res.status == 200) {
         if (!(await Utility.dirDownloadFileExists(dirName: "$dir/allAlbums"))) {
           await Directory("${await Utility.getSavedDir()}/allAlbums").create();
@@ -92,7 +93,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       }
     }
     String data = await SharedPre.allAlbumResp.getStringValue();
-
+    print("data $data");
     if (data.isNotEmpty) {
       final albumResp = albumListRespFromJson(data);
       /*  albumResp.data?.forEach((data) async {
@@ -153,7 +154,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     if (isDownload) {
       if (event.isInternetAvail == true &&
           await Utility.checkInternetConnectivity() == true) {
-        var res = await Api.instance.getSliderData();
+        var res = await Api.instance.getAlbumList();
         if (res.status == 200) {
           if (!(await Utility.dirDownloadFileExists(
               dirName: "$dir/${Constants.allAlbums}"))) {

@@ -1,3 +1,4 @@
+/*
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:page_flip/page_flip.dart';
@@ -41,9 +42,11 @@ class _SliderWidgetState extends State<SliderWidget> {
                 autoPlay: true,
                 // enlargeStrategy: CenterPageEnlargeStrategy.height
                 onPageChanged: (index, reason) {
-                  /*   setState(() {
+                  */
+/*   setState(() {
                     current = index;
-                  });*/
+                  });*//*
+
                 }),
             itemCount: widget.imageList.length,
             itemBuilder: (BuildContext context, int index, int realIndex) {
@@ -56,7 +59,8 @@ class _SliderWidgetState extends State<SliderWidget> {
                   Image.asset(widget.imageList[index+1])
                 ],
               );
-              /*return PageFlipWidget(
+              */
+/*return PageFlipWidget(
                 duration: const Duration(seconds: 6),
                 //key: widget.controller,
                 backgroundColor: Colors.black45,
@@ -75,12 +79,16 @@ class _SliderWidgetState extends State<SliderWidget> {
                   ),
                   // SliderImage(imagePath: widget.imageList[i]),
                 ],
-              );*/
-              /*   return Image.asset(
+              );*//*
+
+              */
+/*   return Image.asset(
                 widget.imageList[index],
                 fit: BoxFit.contain,
                 height: MediaQuery.of(context).size.height * 0.6,
-              );*/
+              );*//*
+
+*/
 /*            return CachedNetworkImage(
                 fit: BoxFit.contain,
                 imageUrl: widget.imageList[index],
@@ -94,7 +102,8 @@ class _SliderWidgetState extends State<SliderWidget> {
                 ),
 
                 errorWidget: (_, __, ___) => Icon(Icons.broken_image)
-              );*/
+              );*//*
+
             },
           ),
         ),
@@ -102,3 +111,4 @@ class _SliderWidgetState extends State<SliderWidget> {
     );
   }
 }
+*/

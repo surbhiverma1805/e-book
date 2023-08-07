@@ -11,10 +11,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'dart:async';
 import 'dart:io';
 import 'package:http/http.dart';
-import 'package:page_flip/page_flip.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
-import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
 class PDFViewer extends StatefulWidget {
   final PhotoBook? photoBook;
@@ -45,13 +43,13 @@ class _PDFViewerState extends State<PDFViewer> {
   Future<File>? createFileOfPdfUrlApi;
   final progressNotifier = ValueNotifier<double?>(0);
 
-  final GlobalKey<PageFlipWidgetState> _controller = GlobalKey();
+  //final GlobalKey<PageFlipWidgetState> _controller = GlobalKey();
 
   var defaultPage = 0;
 
   int index = 0;
 
-  var pdfViewerController = PdfViewerController();
+  //var pdfViewerController = PdfViewerController();
 
   FlipBookController flipBookController = FlipBookController(totalPages: 6);
 
@@ -192,7 +190,7 @@ class _PDFViewerState extends State<PDFViewer> {
         debugPrint("____before index : $i");
         i++;
         await Future.delayed(const Duration(seconds: 6));
-        _controller.currentState!.goToPage(i);
+        //_controller.currentState!.goToPage(i);
         print("going on: $i");
       }
     }();

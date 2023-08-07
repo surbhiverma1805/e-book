@@ -1,6 +1,9 @@
 part of 'app_bloc.dart';
 
-abstract class AppState {}
+class AppState extends Equatable{
+  @override
+  List<Object?> get props => [];
+}
 
 class AppInitState extends AppState {}
 

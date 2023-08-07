@@ -1,7 +1,6 @@
 import 'package:ebook/src/utils/extension/text_style_decoration.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:widget_and_text_animator/widget_and_text_animator.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;

@@ -50,6 +50,7 @@ class AppLocalFileImage extends StatelessWidget {
   final BoxFit? fit;
   final double? width, height, radius;
   final Widget? errorWidget;
+  final Clip? clip;
 
   const AppLocalFileImage({
     Key? key,
@@ -59,12 +60,15 @@ class AppLocalFileImage extends StatelessWidget {
     this.height,
     this.radius,
     this.errorWidget,
+    this.clip,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      clipBehavior: Clip.antiAlias,
+      clipBehavior: clip ?? Clip.antiAlias,
+      width: width,
+      height: height,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(radius ?? 0),
       ),

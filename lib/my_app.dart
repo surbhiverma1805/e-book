@@ -13,33 +13,26 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
   /*  SystemChrome.setPreferredOrientations(
         [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);*/
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider(
-          create: (context) => AppBloc()..add(AppInitEvent()),
-        ),
-      ],
-      child: ScreenUtilInit(
-        designSize: const Size(360, 690),
-          minTextAdapt: true,
-          splitScreenMode: true,
-        builder: (context, child) {
-          return MaterialApp.router(
-            routeInformationProvider: AppRoutes.router.routeInformationProvider,
-            routeInformationParser: AppRoutes.router.routeInformationParser,
-            routerDelegate: AppRoutes.router.routerDelegate,
-            debugShowCheckedModeBanner: false,
-            title: Constants.projectName,
-            theme: ThemeData(
-              primarySwatch: Colors.cyan,
-            ),
-            scaffoldMessengerKey: snackBarKey,
-            //home: const BookView(),
-            //home: HomeView(),
-            //home: MyApps(),
-          );
-        }
-      ),
+    return ScreenUtilInit(
+      designSize: const Size(360, 690),
+        minTextAdapt: true,
+        splitScreenMode: true,
+      builder: (context, child) {
+        return MaterialApp.router(
+          routeInformationProvider: AppRoutes.router.routeInformationProvider,
+          routeInformationParser: AppRoutes.router.routeInformationParser,
+          routerDelegate: AppRoutes.router.routerDelegate,
+          debugShowCheckedModeBanner: false,
+          title: Constants.projectName,
+          theme: ThemeData(
+            primarySwatch: Colors.cyan,
+          ),
+          scaffoldMessengerKey: snackBarKey,
+          //home: const BookView(),
+          //home: HomeView(),
+          //home: MyApps(),
+        );
+      }
     );
   }
 }

@@ -2,6 +2,7 @@ import 'package:ebook/bloc/app_bloc/app_bloc.dart';
 import 'package:ebook/model/album_list_resp.dart';
 import 'package:ebook/src/screen/home_page/bloc/home_bloc.dart';
 import 'package:ebook/src/utils/app_colors.dart';
+import 'package:ebook/src/utils/extension/space.dart';
 import 'package:ebook/src/utils/extension/text_style_decoration.dart';
 import 'package:ebook/src/widgets/app_images.dart';
 import 'package:ebook/src/widgets/custom_txtfield.dart';
@@ -14,6 +15,8 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class HomeView extends StatelessWidget {
   HomeView({Key? key}) : super(key: key);
+
+  AppBloc appBloc = AppBloc(AppInitState());
 
   final TextEditingController pinController = TextEditingController();
 
@@ -46,6 +49,7 @@ class HomeView extends StatelessWidget {
   Widget build(BuildContext context) {
     Size size = const Size(256, 256);
     return BlocConsumer<AppBloc, AppState>(
+      bloc: appBloc,
         listener: (context, state) {},
         builder: (context, state) {
           if (state is InternetLostState) {
@@ -65,8 +69,28 @@ class HomeView extends StatelessWidget {
           builder: (context, state) {
             if (state is HomeLoadedState) {
               return Scaffold(
+                // backgroundColor: Color(0x2C2C2C),
+                //backgroundColor: const Color(0xFF212122),
+                backgroundColor: Colors.white10,
                 appBar: AppBar(
+                  elevation: 6,
+                  //backgroundColor: Color(0xFF212122),
+                  centerTitle: false,
+                  backgroundColor: Colors.black54,
+                  title: Container(
+                    margin: EdgeInsets.only(left: 0.w),
+                    child: Text(
+                      Constants.projectName,
+                      style: const TextStyle().bold.copyWith(
+                            fontSize: 22.sp,
+                            color: Colors.white,
+                          ),
+                    ),
+                  ),
+                ),
+                /* appBar: AppBar(
                   centerTitle: true,
+                  backgroundColor: Color(0x212122),
                   title: Text(
                     Constants.projectName,
                     style: const TextStyle().bold.copyWith(
@@ -74,7 +98,7 @@ class HomeView extends StatelessWidget {
                           color: Colors.white,
                         ),
                   ),
-                ),
+                ),*/
                 /*   floatingActionButton: state.isLoading ?? false
                     ? const SizedBox.shrink()
                     : FloatingActionButton(
@@ -160,129 +184,177 @@ class HomeView extends StatelessWidget {
                                 Constants.somethingWentWrong,
                                 textAlign: TextAlign.center,
                                 style: const TextStyle().medium.copyWith(
-                                      color: Colors.grey.shade500,
+                                      color: Colors.white,
                                       fontSize: 18,
                                     ),
                               ),
                             ),
                           )
-                        : GridView.builder(
-                            padding: EdgeInsets.all(15.h),
-                            // separatorBuilder: (context, index) => const Divider(
-                            //   color: Colors.grey,
-                            // ),
-                            gridDelegate:
-                                SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: MediaQuery.of(context).orientation == Orientation.landscape
-                                  ? 3
-                                  : 2,
-                              mainAxisSpacing: 15,
-                              crossAxisSpacing: 15,
-                            ),
-                            //itemCount: state.photoBookList?.length ?? 0,
-                            //itemCount: state.albumData?.length ?? 0,
-                            itemCount: state.allAlbumList?.length ?? 0,
-                            itemBuilder: (context, index) => Container(
-                              // padding: const EdgeInsets.all(5),
-                              decoration: BoxDecoration(
-                                gradient: const LinearGradient(
-                                  colors: [
-                                    cyanColor,
-                                    Colors.white,
-                                  ],
-                                  begin: Alignment.centerLeft,
-                                  end: Alignment.centerRight,
-                                ),
-                                borderRadius:
-                                    BorderRadius.circular(borderRadius),
-                              ),
-                              child: InkWell(
-                                onTap: () {
-                                  BlocProvider.of<HomeBloc>(context).add(
-                                    GoToPdfViewEvent(
-                                      galleryImageList:
-                                          state.albumData?[index].galleryImages,
-                                      // pin: pinController.text.trim(),
-                                      frontImage:
-                                          state.allAlbumList?[index].imageName,
-                                      albumName:
-                                          state.allAlbumList?[index].albumName,
+                        : Column(
+                            children: [
+                              15.toSpace(),
+                              Expanded(
+                                child: GridView.builder(
+                                  // padding: EdgeInsets.all(15.h),
+                                  // separatorBuilder: (context, index) => const Divider(
+                                  //   color: Colors.grey,
+                                  // ),
+                                  gridDelegate:
+                                      SliverGridDelegateWithFixedCrossAxisCount(
+                                    crossAxisCount:
+                                        MediaQuery.of(context).orientation ==
+                                                Orientation.landscape
+                                            ? 3
+                                            : 2,
+                                    mainAxisSpacing: 15,
+                                    crossAxisSpacing: 0,
+                                  ),
+                                  //itemCount: state.photoBookList?.length ?? 0,
+                                  //itemCount: state.albumData?.length ?? 0,
+                                  itemCount: state.allAlbumList!.length % 2 == 1
+                                      ? state.allAlbumList!.length + 1
+                                      : state.allAlbumList!.length,
+                                  itemBuilder: (context, index) {
+                                    return Stack(
+                                      alignment: Alignment.bottomCenter,
+                                      children: [
+                                        dividerWidget(context),
+                                        state.allAlbumList!.length % 2 == 1 &&
+                                                state.allAlbumList!.length ==
+                                                    index
+                                            ? const SizedBox.shrink()
+                                            : Positioned(
+                                                bottom: 18.h,
+                                                child: InkWell(
+                                                  onTap: () {
+                                                    BlocProvider.of<HomeBloc>(context).add(
+                                                      GoToPdfViewEvent(
+                                                        galleryImageList:
+                                                        state.albumData?[index].galleryImages,
+                                                        // pin: pinController.text.trim(),
+                                                        frontImage:
+                                                        state.allAlbumList?[index].imageName,
+                                                        albumName:
+                                                        state.allAlbumList?[index].albumName,
+                                                      ),
+                                                    );
+                                                  },
+                                                  child: itemWidget(
+                                                    image: state
+                                                            .allAlbumList?[index]
+                                                            .imageName ??
+                                                        "",
+                                                  ),
+                                                ),
+                                              )
+                                      ],
+                                    );
+                                  },
+                                  /* itemBuilder: (context, index) => Container(
+                                    // padding: const EdgeInsets.all(5),
+                                    decoration: BoxDecoration(
+                                      gradient: const LinearGradient(
+                                        colors: [
+                                          cyanColor,
+                                          Colors.white,
+                                        ],
+                                        begin: Alignment.centerLeft,
+                                        end: Alignment.centerRight,
+                                      ),
+                                      borderRadius:
+                                          BorderRadius.circular(borderRadius),
                                     ),
-                                  );
-                                  return;
-                                  pdfView(
-                                    context,
-                                    galleryImageList:
-                                        state.albumData![index].galleryImages,
-                                    frontImage:
-                                        state.albumData?[index].featureImg,
-                                    postTitle:
-                                        state.albumData?[index].postTitle,
-                                  );
-                                },
-                                child: Stack(
-                                  children: [
-                                    Positioned.fill(
-                                        child: AppLocalFileImage(
-                                      imageUrl: state
-                                              .allAlbumList?[index].imageName ??
-                                          "",
-                                      fit: BoxFit.cover,
-                                      radius: 20.r,
-                                    )
-
-                                        /*  AppCachedNetworkImage(
-                                          imageUrl:
-                                              "${ApiMethods.imageBaseUrl}${state.albumData?[index].featureImg}" ??
-                                                  "assets/images/image1.jpeg",
-                                          fit: BoxFit.cover,
-                                          radius: 20,
-                                          errorWidget: const Icon(
-                                            Icons.broken_image,
-                                            size: 60,
+                                    child: InkWell(
+                                      onTap: () {
+                                        BlocProvider.of<HomeBloc>(context).add(
+                                          GoToPdfViewEvent(
+                                            galleryImageList:
+                                                state.albumData?[index].galleryImages,
+                                            // pin: pinController.text.trim(),
+                                            frontImage:
+                                                state.allAlbumList?[index].imageName,
+                                            albumName:
+                                                state.allAlbumList?[index].albumName,
                                           ),
-                                        ),*/
-                                        /*   child: ClipRRect(
-                                    borderRadius:
-                                        BorderRadius.circular(borderRadius),
-                                    child: Image.network(
-                                      ebookList[index].image,
-                                      fit: BoxFit.cover,
-                                    ),
-                                  ),*/
-                                        ),
-                                    Positioned(
-                                      left: 0,
-                                      right: 0,
-                                      bottom: 0,
-                                      child: Container(
-                                        alignment: Alignment.center,
-                                        height: 40.h,
-                                        padding:
-                                            EdgeInsets.symmetric(vertical: 5.h),
-                                        decoration: BoxDecoration(
-                                          color: Colors.black,
-                                          borderRadius: BorderRadius.vertical(
-                                              bottom: Radius.circular(
-                                                  borderRadius)),
-                                        ),
-                                        child: Text(
-                                          // ebookList[index].split('/').last,
-                                          //state.albumData?[index].postTitle ??
-                                          state.allAlbumList?[index]
-                                                  .albumName ??
-                                              Constants.unknownAlbum,
-                                          textAlign: TextAlign.center,
-                                          style: const TextStyle()
-                                              .bold
-                                              .copyWith(color: Colors.white, fontSize: 14.sp,),
-                                        ),
+                                        );
+                                        return;
+                                        pdfView(
+                                          context,
+                                          galleryImageList:
+                                              state.albumData![index].galleryImages,
+                                          frontImage:
+                                              state.albumData?[index].featureImg,
+                                          postTitle:
+                                              state.albumData?[index].postTitle,
+                                        );
+                                      },
+                                      child: Stack(
+                                        children: [
+                                          Positioned.fill(
+                                              child: AppLocalFileImage(
+                                            imageUrl: state
+                                                    .allAlbumList?[index].imageName ??
+                                                "",
+                                            fit: BoxFit.cover,
+                                            radius: 20.r,
+                                          )
+
+                                              */ /*  AppCachedNetworkImage(
+                                                imageUrl:
+                                                    "${ApiMethods.imageBaseUrl}${state.albumData?[index].featureImg}" ??
+                                                        "assets/images/image1.jpeg",
+                                                fit: BoxFit.cover,
+                                                radius: 20,
+                                                errorWidget: const Icon(
+                                                  Icons.broken_image,
+                                                  size: 60,
+                                                ),
+                                              ),*/ /*
+                                              */ /*   child: ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(borderRadius),
+                                          child: Image.network(
+                                            ebookList[index].image,
+                                            fit: BoxFit.cover,
+                                          ),
+                                        ),*/ /*
+                                              ),
+                                          Positioned(
+                                            left: 0,
+                                            right: 0,
+                                            bottom: 0,
+                                            child: Container(
+                                              alignment: Alignment.center,
+                                              height: 40.h,
+                                              padding:
+                                                  EdgeInsets.symmetric(vertical: 5.h),
+                                              decoration: BoxDecoration(
+                                                color: Colors.black,
+                                                borderRadius: BorderRadius.vertical(
+                                                    bottom: Radius.circular(
+                                                        borderRadius)),
+                                              ),
+                                              child: Text(
+                                                // ebookList[index].split('/').last,
+                                                //state.albumData?[index].postTitle ??
+                                                state.allAlbumList?[index]
+                                                        .albumName ??
+                                                    Constants.unknownAlbum,
+                                                textAlign: TextAlign.center,
+                                                style: const TextStyle()
+                                                    .bold
+                                                    .copyWith(color: Colors.white, fontSize: 14.sp,),
+                                              ),
+                                            ),
+                                          ),
+                                        ],
                                       ),
                                     ),
-                                  ],
+                                  ),*/
                                 ),
                               ),
-                            ),
+                              15.toSpace(),
+                            ],
                           ),
                 // // // body: ListView.builder(
                 //   // separatorBuilder: (context, index) => const Divider(
@@ -301,6 +373,106 @@ class HomeView extends StatelessWidget {
               return const SizedBox.shrink();
             }
           }),
+    );
+  }
+
+  Widget dividerWidget(BuildContext context) {
+    const double fillPercent = 50; // fills 56.23% for container from bottom
+    const double fillStop = (100 - fillPercent) / 100;
+    final List<double> stops = [0.0, fillStop, fillStop, 1.0];
+    return Container(
+      height: 25.h,
+      width: MediaQuery.of(context).size.width,
+      // color: const Color(0xFF212122),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: const [
+            Color(0xFF222626),
+            Color(0xFF222626),
+            Color(0xFF393B3B),
+            Color(0xFF393B3B)
+          ],
+          stops: stops,
+          end: Alignment.bottomCenter,
+          begin: Alignment.topCenter,
+        ),
+      ),
+    );
+  }
+
+  Widget itemWidget({required String image}) {
+    return Container(
+      width: 130.h,
+      height: 150.h,
+      clipBehavior: Clip.antiAlias,
+      decoration: BoxDecoration(
+        color: const Color(0xFF212122),
+        // borderRadius: BorderRadius.
+        // circular(10.r),
+        borderRadius: BorderRadius.only(
+          topRight: Radius.circular(5.r),
+          bottomRight: Radius.circular(4.r),
+          topLeft: Radius.circular(2.r),
+        ),
+        /*   border: Border(
+                right: BorderSide(color: Colors.red),
+
+              )*/
+      ),
+      child: Stack(
+        children: [
+          Container(
+            margin: EdgeInsets.only(right: 8.w), // ***
+            decoration: BoxDecoration(
+              color: const Color(0xFF212122),
+              borderRadius: BorderRadius.only(
+                topRight: Radius.circular(5.r),
+                bottomRight: Radius.circular(4.r),
+                topLeft: Radius.circular(2.r),
+              ),
+              // borderRadius: BorderRadius.circular(8.r),
+              boxShadow: const [
+                BoxShadow(
+                    color: Colors.white,
+                    blurRadius: 3,
+                    spreadRadius: 3,
+                    offset: Offset(3.5, 3.5))
+              ],
+            ),
+            child: AppLocalFileImage(
+              imageUrl: image ?? "",
+              fit: BoxFit.cover,
+              width: 150.h,
+              height: 150.h,
+              // radius: 20.r,
+            ),
+            /*  child: Image.asset(
+              AppAssets.image1,
+              width: 150.h,
+              height: 150.h,
+              fit: BoxFit.cover,
+            ),*/
+          ),
+          Positioned(
+            left: 8.w,
+            child: Container(
+              height: 150.h,
+              width: 1.w,
+              decoration: BoxDecoration(
+                color: Colors.white24,
+                borderRadius: BorderRadius.circular(20.r),
+                boxShadow: const [
+                  BoxShadow(
+                      color: Colors.white38,
+                      blurRadius: 1,
+                      spreadRadius: 0,
+                      offset: Offset(0, 1.5))
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 

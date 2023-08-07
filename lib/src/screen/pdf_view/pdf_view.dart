@@ -9,6 +9,7 @@ import 'package:ebook/src/screen/flip_page_builder.dart';
 import 'package:ebook/src/screen/pdf_view/custom_flip_book/widget/book.dart';
 import 'package:ebook/src/screen/pdf_view/custom_flip_book/controller/book_controller.dart';
 import 'package:ebook/src/screen/pdf_view/bloc/pdf_viewer_bloc.dart';
+import 'package:ebook/src/screen/pdf_view/page_curl/widgets/curl_widget.dart';
 import 'package:ebook/src/utils/app_assets.dart';
 import 'package:ebook/src/utils/app_colors.dart';
 import 'package:ebook/src/utils/extension/space.dart';
@@ -40,6 +41,8 @@ class PdfView extends StatefulWidget {
 }
 
 class _PdfViewState extends State<PdfView> {
+  AppBloc appBloc = AppBloc(AppInitState());
+
   FlipBookController? flipBookController;
   Timer? _timer;
   int index = 0;
@@ -123,6 +126,7 @@ class _PdfViewState extends State<PdfView> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return BlocConsumer<AppBloc, AppState>(
+      bloc: appBloc,
         listener: (context, state) {},
         builder: (context, state) {
           if (state is InternetLostState) {
@@ -160,9 +164,10 @@ class _PdfViewState extends State<PdfView> {
                 onPressed: () {
                   assetsAudioPlayer.stop();
                   flipBookController?.dispose();
-                  Future.delayed(const Duration(seconds: 1), () {
+                  Navigator.pop(context);
+                /*  Future.delayed(const Duration(seconds: 1), () {
                     AppRoutes.router.goNamed(AppRoutes.homeView);
-                  });
+                  });*/
                 },
                 icon: const Icon(
                   Icons.arrow_back,
@@ -240,35 +245,76 @@ class _PdfViewState extends State<PdfView> {
                           margin: EdgeInsets.symmetric(
                             vertical: 8.h,
                           ),
-                          child: FlipBook.builder(
-                            pageSize: Size(
-                                size.width / 2,
-                                MediaQuery.of(context).orientation ==
-                                        Orientation.landscape
-                                    ? size.height * 0.6
-                                    : size.height * 0.3),
-                            showPreNextBtn:
-                                (state.isSlider ?? false) ? false : true,
-                            padding: const EdgeInsets.only(left: 0, right: 0),
-                            pageBuilder:
-                                (ctx, pageSize, pageIndex, semanticPageName) {
-                              pageNumber =
-                                  flipBookController?.currentLeaf.index ?? 0;
-                              return flipBookWidget(
-                                context: context,
-                                pageIndex: pageIndex,
-                                galleryImageList: state.galleryImageList,
-                                imageList: state.imageList,
-                                size: size,
-                              );
-                            },
+                         child: FlipBook.builder(
+                           pageSize: Size(
+                               size.width / 2,
+                               MediaQuery.of(context).orientation ==
+                                   Orientation.landscape
+                                   ? size.height * 0.6
+                                   : size.height * 0.3),
+                           showPreNextBtn:
+                           (state.isSlider ?? false) ? false : true,
+                           padding: const EdgeInsets.only(left: 0, right: 0),
+                           pageBuilder:
+                               (ctx, pageSize, pageIndex, semanticPageName) {
+                             pageNumber =
+                                 flipBookController?.currentLeaf.index ?? 0;
+                             return flipBookWidget(
+                               context: context,
+                               pageIndex: pageIndex,
+                               galleryImageList: state.galleryImageList,
+                               imageList: state.imageList,
+                               size: size,
+                             );
+                           },
+                           controller: flipBookController,
+                           totalPages:
+                           widget.pin == 0 ? totalPage : widget.pin,
+                           onPageChanged: (i) {
+                             debugPrint("on page changed : $i");
+                           },
+                         ),
+                         /* child: CurlWidget(
                             controller: flipBookController,
-                            totalPages:
-                                widget.pin == 0 ? totalPage : widget.pin,
-                            onPageChanged: (i) {
-                              debugPrint("on page changed : $i");
-                            },
-                          ),
+                            size: Size(400, size.height * 0.3),
+                            vertical: false,
+                            backWidget: Container(
+                              height: 200,
+                              width: 150,
+                              child: Image.asset(AppAssets.image1, fit: BoxFit.cover,
+                                height: 200,
+                                width: 150,),
+                            ),
+                            frontWidget: FlipBook.builder(
+                              pageSize: Size(
+                                  size.width / 2,
+                                  MediaQuery.of(context).orientation ==
+                                          Orientation.landscape
+                                      ? size.height * 0.6
+                                      : size.height * 0.3),
+                              showPreNextBtn:
+                                  (state.isSlider ?? false) ? false : true,
+                              padding: const EdgeInsets.only(left: 0, right: 0),
+                              pageBuilder:
+                                  (ctx, pageSize, pageIndex, semanticPageName) {
+                                pageNumber =
+                                    flipBookController?.currentLeaf.index ?? 0;
+                                return flipBookWidget(
+                                  context: context,
+                                  pageIndex: pageIndex,
+                                  galleryImageList: state.galleryImageList,
+                                  imageList: state.imageList,
+                                  size: size,
+                                );
+                              },
+                              controller: flipBookController,
+                              totalPages:
+                                  widget.pin == 0 ? totalPage : widget.pin,
+                              onPageChanged: (i) {
+                                debugPrint("on page changed : $i");
+                              },
+                            ),
+                          ),*/
                         ),
                       ],
                     ),

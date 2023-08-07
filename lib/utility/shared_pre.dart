@@ -4,6 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class SharedPre {
   static const allAlbumResp = "all_album_resp";
+  static const albumImageList = "album_image_list";
 
   static Future<bool> setString(String key, String value) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();

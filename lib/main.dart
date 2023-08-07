@@ -1,7 +1,9 @@
 import 'dart:io';
 
+import 'package:ebook/bloc/bloc_observer.dart';
 import 'package:ebook/my_app.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 List<Image> imageList = <Image>[
   Image.asset(
@@ -40,6 +42,7 @@ class MyHttpOverrides extends HttpOverrides {
 void main() {
   //await ScreenUtil.ensureScreenSize();
   WidgetsFlutterBinding.ensureInitialized();
+  Bloc.observer = MyBlocObserver();
   HttpOverrides.global = MyHttpOverrides();
   runApp( const MyApp());
   // runApp(FlipbookPage(
